@@ -3,6 +3,7 @@
 
 node_modules
 package-lock.json
+urlproject.zip
 
 
 /src/generated/prisma

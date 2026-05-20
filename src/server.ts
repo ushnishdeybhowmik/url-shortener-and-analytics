@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import env from "./config/env.js";
+import { prisma } from './lib/prisma.js';
 
 const app = express();
 
@@ -11,8 +12,13 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.get("/health", (_, res) => {
-    res.status(200).json({ status: "ok" });
+app.get('/health', async (_, res) => {
+    const users = await prisma.user.count();
+
+    res.json({
+        status: 'ok',
+        users,
+    });
 });
 
 app.listen(env.PORT, () => {
