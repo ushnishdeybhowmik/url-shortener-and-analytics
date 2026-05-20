@@ -2,7 +2,7 @@ import express from 'express';
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import { env } from './config/env';
+import env from "./config/env.js";
 
 const app = express();
 
