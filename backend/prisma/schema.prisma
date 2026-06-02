@@ -25,6 +25,17 @@ model Url {
   userId      String
   user        User     @relation(fields: [userId], references: [id])
 
+  clicks      Click[]
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Click {
+  id        String   @id @default(cuid())
+
+  urlId      String
+  url        Url      @relation(fields: [urlId], references: [id])
+
+  createdAt DateTime @default(now())
 }

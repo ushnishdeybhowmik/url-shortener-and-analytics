@@ -1,5 +1,5 @@
 import {createUrlSchema} from './url.validation.js';
-import { createUrl, getUrlByShortCode } from './url.service.js';
+import { createUrl, getUrlByShortCode, recordClick } from './url.service.js';
 import { Request, Response} from 'express';
 
 export const createUrlHandler = async (req: Request, res: Response) => {
@@ -31,6 +31,8 @@ export const redirectUrlHandler = async (req: Request, res: Response) => {
         if (!urlRecord) {
             return res.status(404).json({ message: "URL not found" });
         }
+
+        await recordClick(urlRecord.id);
         
         return res.redirect(urlRecord.originalUrl);
     }

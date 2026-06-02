@@ -22,3 +22,11 @@ export const getUrlByShortCode = async (shortCode: string) => {
         }
     });
 }
+
+export const recordClick = async (urlId: string) => {
+    return prisma.click.create({
+        data: {
+            urlId
+        }
+    });
+}
