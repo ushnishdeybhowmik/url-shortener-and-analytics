@@ -5,6 +5,7 @@ import morgan from "morgan";
 import env from "./config/env.js";
 import { prisma } from './lib/prisma.js';
 import authRoutes from './modules/auth/auth.routes.js';
+import urlRoutes from './modules/urls/url.routes.js';
 import { authMiddleware } from './middleware/auth.middleware.js';
 
 const app = express();
@@ -19,6 +20,8 @@ app.use('/auth', authRoutes);
 app.get('/me', authMiddleware, async (req, res) => {
     res.json({user: req.user});
 });
+
+app.use('/urls', authMiddleware, urlRoutes);
 
 app.get('/health', async (_, res) => {
     const users = await prisma.user.count();
