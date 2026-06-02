@@ -13,3 +13,12 @@ export const createUrl = async (userId: string, originalUrl: string) => {
         }
     });
 }
+
+export const getUrlByShortCode = async (shortCode: string) => {
+    // console.log("Looking up URL with shortCode:", shortCode);
+    return prisma.url.findUnique({
+        where: {
+            shortCode
+        }
+    });
+}

@@ -6,6 +6,7 @@ import env from "./config/env.js";
 import { prisma } from './lib/prisma.js';
 import authRoutes from './modules/auth/auth.routes.js';
 import urlRoutes from './modules/urls/url.routes.js';
+import {redirectUrlHandler} from './modules/urls/url.controller.js';
 import { authMiddleware } from './middleware/auth.middleware.js';
 
 const app = express();
@@ -22,6 +23,8 @@ app.get('/me', authMiddleware, async (req, res) => {
 });
 
 app.use('/urls', authMiddleware, urlRoutes);
+
+app.use('/:shortCode', redirectUrlHandler);
 
 app.get('/health', async (_, res) => {
     const users = await prisma.user.count();
