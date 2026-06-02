@@ -24,17 +24,18 @@ app.get('/me', authMiddleware, async (req, res) => {
 
 app.use('/urls', authMiddleware, urlRoutes);
 
-app.use('/:shortCode', redirectUrlHandler);
 
 app.get('/health', async (_, res) => {
     const users = await prisma.user.count();
-
+    
     res.json({
         status: 'ok',
         users,
     });
 });
 
-app.listen(env.PORT, () => {
+app.use('/:shortCode', redirectUrlHandler);
+
+app.listen(env.PORT as number, '0.0.0.0', () => {
     console.log(`Server is running on port ${env.PORT}`);
 });
