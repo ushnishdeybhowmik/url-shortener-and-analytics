@@ -30,3 +30,28 @@ export const recordClick = async (urlId: string) => {
         }
     });
 }
+
+export const getUrlAnalytics = async ( urlId: string, userId: string) => {
+    const url = await prisma.url.findFirst({
+        where: {
+            id: urlId,
+            userId
+        },
+        include: {
+            clicks: true
+        }
+    });
+
+    if (!url) {
+        return null;
+    }
+
+    return {
+        id: url.id,
+        shortCode: url.shortCode,
+        originalUrl: url.originalUrl,
+        totalClicks: url.clicks.length,
+        createdAt: url.createdAt
+    }
+
+}

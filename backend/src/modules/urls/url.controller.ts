@@ -1,5 +1,5 @@
 import {createUrlSchema} from './url.validation.js';
-import { createUrl, getUrlByShortCode, recordClick } from './url.service.js';
+import { createUrl, getUrlByShortCode, recordClick, getUrlAnalytics } from './url.service.js';
 import { Request, Response} from 'express';
 
 export const createUrlHandler = async (req: Request, res: Response) => {
@@ -39,5 +39,22 @@ export const redirectUrlHandler = async (req: Request, res: Response) => {
     catch (error) {
         console.error("Error redirecting URL:", error);
         return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export const getAnalyticsHandler = async (req: Request, res: Response) => {
+    try {
+        const urlId = req.params.id;
+        const userId = req.user!.id;
+
+        const analyticsData = await getUrlAnalytics(urlId as string, userId);
+
+        if (!analyticsData) {
+            return res.status(404).json({ message: "URL not found or you do not have access to it" });
+        }
+        
+        return res.status(200).json(analyticsData);
+    } catch(error) {
+        return res.status(500).json({ message: "ANALYTICS_ERROR" });
     }
 }
