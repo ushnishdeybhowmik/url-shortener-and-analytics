@@ -1,6 +1,6 @@
 import {prisma} from '../../lib/prisma.js';
 import {hashPassword, comparePasswords} from '../../utils/hash.js';
-import {generateToken, verifyToken} from '../../utils/jwt.js';
+import {generateAccessToken, verifyToken} from '../../utils/jwt.js';
 
 export async function registerUser(email: string, password: string) {
     const existingUser = await prisma.user.findUnique(
@@ -22,9 +22,14 @@ export async function registerUser(email: string, password: string) {
         },
     });
 
-    const token = generateToken(user.id);
+    const token = generateAccessToken(user.id);
 
-    return {user, token};
+    const resUser = {
+        id: user.id,
+        email: user.email,
+    }
+
+    return {user : resUser, token};
 }
 
 export async function loginUser(email: string, password: string) {
@@ -42,8 +47,13 @@ export async function loginUser(email: string, password: string) {
         throw new Error('Invalid credentials.');
     }
 
-    const token = generateToken(user.id);
+    const token = generateAccessToken(user.id);
+
+    const resUser = {
+        id: user.id,
+        email: user.email,
+    }
     
-    return {user, token};
+    return {user: resUser, token};
 }
 

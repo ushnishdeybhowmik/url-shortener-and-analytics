@@ -16,6 +16,10 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
         }
 
         const decoded = verifyToken(token) as { userId: string };
+        
+        if (!decoded) {
+            return res.status(401).json({message: 'INVALID_AUTH_TOKEN'});
+        }
 
         req.user = { id: decoded.userId };
 
