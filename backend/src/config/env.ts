@@ -10,6 +10,7 @@ const env = {
     DATABASE_URL: process.env.DATABASE_URL || '',
     REDIS_HOST: process.env.REDIS_HOST || 'localhost',
     REDIS_PORT: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
+    REDIS_URL: process.env.REDIS_URL || 'redis://localhost:6379',
     JWT_SECRET: process.env.JWT_SECRET || "",
 }
 

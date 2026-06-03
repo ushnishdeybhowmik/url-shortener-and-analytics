@@ -1,5 +1,5 @@
 import {createUrlSchema} from './url.validation.js';
-import { createUrl, getUrlByShortCode, recordClick, getUrlAnalytics } from './url.service.js';
+import { createUrl, getUrlByShortCode, recordClick, getUrlAnalytics, getUserUrls } from './url.service.js';
 import { Request, Response} from 'express';
 
 export const createUrlHandler = async (req: Request, res: Response) => {
@@ -56,5 +56,15 @@ export const getAnalyticsHandler = async (req: Request, res: Response) => {
         return res.status(200).json(analyticsData);
     } catch(error) {
         return res.status(500).json({ message: "ANALYTICS_ERROR" });
+    }
+}
+
+export const getUserUrlsHandler = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user!.id;
+        const urls = await getUserUrls(userId);
+        return res.status(200).json(urls);
+    } catch(error) {
+        return res.status(500).json({ message: "USER_URLS_ERROR" });
     }
 }
